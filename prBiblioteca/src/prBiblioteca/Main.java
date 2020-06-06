@@ -16,10 +16,10 @@ public class Main {
 			try {
 				
 				//Estas sentencias deben ejecutarse SOLO LA PRIMERA VEZ que se inicia el programa para crear y rellenar las tablas
-//			Connection conexion = LibreriaBaseDatos.conecta(nombre, "dariojesus", "1234");
-//			LibreriaBaseDatos.creaTablas(conexion, nombre);
-//			LibreriaBaseDatos.rellenaTablas(conexion, nombre);
-//			conexion.close();
+//				Connection conexion = LibreriaBaseDatos.conecta(nombre, "dariojesus", "1234");
+//				LibreriaBaseDatos.creaTablas(conexion, nombre);
+//				LibreriaBaseDatos.rellenaTablas(conexion, nombre);
+//				conexion.close();
 				//
 				
 				Vista miVista = new Vista();
@@ -27,10 +27,10 @@ public class Main {
 				miVista.control(c);
 				
 				JFrame ventana = new JFrame("Sistema gestor de biblioteca");
-				//ventana.setResizable(false);
+				ventana.setResizable(false);
 				ventana.setContentPane(miVista);
 				ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				ventana.setPreferredSize(new Dimension(915,620));
+				ventana.setPreferredSize(new Dimension(990,610));
 				ventana.pack();
 				ventana.setVisible(true);
 				

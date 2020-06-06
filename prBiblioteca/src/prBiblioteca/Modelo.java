@@ -66,7 +66,7 @@ public class Modelo {
 	
 	public String borrarLibro (Libro l) throws SQLException {
 		
-		st.executeUpdate("DELETE FROM mibase.libro WHERE libro.codLibro = "+l.getCodLibro());
+		st.executeUpdate("DELETE FROM libro WHERE codLibro = "+l.getCodLibro());
 		this.creaConsulta();
 		
 		return "LIBRO: "+l.getTitulo()+"\nDEL AUTOR: "+l.getAutor()+"\nCON CÓDIGO: "+l.getCodLibro()+"\nBORRADO";
@@ -85,6 +85,38 @@ public class Modelo {
 		
 		return cod;
 
+	}
+	
+	//Acciones del panel socios
+	
+	public String borrarSocio(int codigo) throws SQLException {
+		
+		st.executeUpdate("DELETE FROM socio where codSocio ="+codigo);
+		this.creaConsulta();
+		
+		return "Socio con código: "+codigo+" borrado con éxito";
+	}
+	
+	public Socio creaSocio(int codigo, String nombre, String apellidos, String telefono, String direccion) throws SQLException {
+		
+		//No ha entrado un código válido (campo en blanco) por lo cual se creará un nuevo usuario
+		if (codigo ==-1) {
+			st.executeUpdate("INSERT INTO socio (nombre,apellidos,telefono,direccion) values ('"+nombre+"','"+apellidos+"','"+telefono+"','"+direccion+"')");
+			res = st.executeQuery("SELECT MAX(codSocio) from socio");
+			res.next();
+			codigo = res.getInt(1);
+			
+		//Ha entrado un código válido (el campo código tiene dato) por lo cual se esta editando un usuario ya existente
+		}else {
+			st.executeUpdate("UPDATE socio SET nombre='"+nombre+"', apellidos='"+apellidos+"', telefono='"+telefono+"', direccion='"+direccion+"'"
+								+"WHERE codSocio="+codigo);
+			
+		}
+		
+		this.creaConsulta();
+
+		return new Socio(codigo,nombre,apellidos,telefono,direccion);
+		
 	}
 	
 	
@@ -121,8 +153,6 @@ public class Modelo {
 		
 	}
 
-	
-	
 	//Getters y setters
 	public Connection getConexion() {
 		return conexion;

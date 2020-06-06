@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import javax.swing.table.DefaultTableModel;
 
 
 public class Vista extends JPanel {
@@ -25,6 +26,7 @@ public class Vista extends JPanel {
 	private Connection conexion = null;
 	private JTabbedPane pestañas;
 	
+	//Campos accesibles del panel gestion de libros
 	private JTextField codAutor;
 	private JTextField nombreAutor;
 	private JTextField nacionalidad;
@@ -39,12 +41,19 @@ public class Vista extends JPanel {
 	private JButton bBorraLibro;
 	private JButton bLimpiar;
 	
+	//Campos accesibles del panel gestion de socios
 	private JTextField codSocio;
 	private JTextField nombreSocio;
 	private JTextField apellidos;
 	private JTextField telefono;
 	private JTextField direccion;
+	private JTable tablaSocios;
+	private DefaultTableModel modelTablaSocios;
+	private JButton bGuardaSocio;
+	private JButton bBorraSocio;
+	private JButton bLimpiaSocio;
 	
+	//Campos accesibles del panel de gestion de prestamos
 	private JList <Socio> socios;
 	private DefaultListModel<Socio> modelSocios = new DefaultListModel<Socio>();
 	private JList <Libro> libros;
@@ -75,17 +84,13 @@ public class Vista extends JPanel {
 
 		pestañas.addTab("Gestión de libros", panelLibro());
 		pestañas.setToolTipTextAt(0, "Permite agregar, eliminar y consultar los libros de la base de datos.");
-		pestañas.setIconAt(0, new ImageIcon("imagenes/IconoPeli.jpg"));
 		
 		pestañas.addTab("Gestión de socios", panelSocio());
 		pestañas.setToolTipTextAt(1, "Permite agregar socios a la base de datos.");
-		pestañas.setIconAt(1, new ImageIcon("imagenes/IconoPeli.jpg"));
 		
 		pestañas.addTab("Gestión de prestamos", panelPrestamo());
 		pestañas.setToolTipTextAt(2, "Permite prestar, devolver y consultar prestamos de los socios.");
-		pestañas.setIconAt(2, new ImageIcon("imagenes/IconoPeli.jpg"));
 		
-
 		this.setLayout(new GridLayout(1,1));
 		this.add(pestañas);
 	}
@@ -93,133 +98,228 @@ public class Vista extends JPanel {
 	private JPanel panelLibro() throws SQLException, MalformedURLException {
 		
 		JPanel p = new JPanel ();
-		p.setLayout(new GridLayout(1,2));
+		p.setLayout(null);
 		
-		//Se prepara el panel con los datos del libro que se quiere borrar/agregar
-			JPanel interno = new JPanel();
-			interno.setLayout(new BorderLayout());
-			interno.setBorder(new TitledBorder("Datos del libro"));
-			
-				JPanel exAgrega = new JPanel();
-			
-				JPanel agrega = new JPanel();
-				agrega.setLayout(new GridLayout(7,2,5,10));
-				
-				agrega.add(new JLabel("Codigo autor: "));
-				codAutor = new JTextField();
-				codAutor.setEditable(false);
-				codAutor.setBackground(Color.gray);
-				agrega.add(codAutor);
-				
-				agrega.add(new JLabel("Nombre autor: "));
-				nombreAutor = new JTextField();
-				agrega.add(nombreAutor);
-				
-				agrega.add(new JLabel("Nacionalidad: "));
-				nacionalidad = new JTextField();
-				agrega.add(nacionalidad);
-				
-				agrega.add(new JLabel("Codigo del Libro: "));
-				codLibro = new JTextField();
-				codLibro.setEditable(false);
-				codLibro.setBackground(Color.gray);
-				agrega.add(codLibro);
-				
-				agrega.add(new JLabel("Titulo del libro: "));
-				titulo = new JTextField();
-				agrega.add(titulo);
-				
-				agrega.add(new JLabel("Año de publicación: "));
-				año = new JTextField();
-				agrega.add(año);
-				
-				agrega.add(new JLabel("URL imagen: "));
-				url = new JTextArea();
-				agrega.add(url);
-				
-				exAgrega.add(agrega);
-				interno.add(exAgrega,BorderLayout.CENTER);
-				
-				JPanel botones = new JPanel ();
-				bGuardaLibro = new JButton("Guardar");
-				bBorraLibro = new JButton("Borrar");
-				bBorraLibro.setEnabled(false);
-				bLimpiar = new JButton("Limpiar");
-				botones.add(bGuardaLibro);
-				botones.add(bLimpiar);
-				botones.add(bBorraLibro);
-				
-				interno.add(botones,BorderLayout.SOUTH);
-				
-		//Se prepara el panel con la lista de libros disponibles en la base de datos
-			JPanel interno2 = new JPanel();
-			interno2.setBorder(new TitledBorder("Libros disponibles"));
-			
-				modelDisponibles.addAll(this.listarLibros());
-				disponibles = new JList<Libro>();
-				disponibles.setModel(modelDisponibles);
-				
-					
-					JSplitPane split = new JSplitPane();
-					split.setOrientation(JSplitPane.VERTICAL_SPLIT);
-			
-					JScrollPane scroll = new JScrollPane(disponibles);
-					scroll.setPreferredSize(new Dimension(400,95));
-					split.setLeftComponent(scroll);
-					
-					JScrollPane scrollImagen = new JScrollPane();
-					scrollImagen.setPreferredSize(new Dimension(400,400));
-					scrollImagen.setBackground(Color.WHITE);
-					split.setRightComponent(scrollImagen);
-					
-					imagen = new JLabel();
-					imagen.setIcon(new ImageIcon());
-					imagen.setHorizontalAlignment(SwingConstants.CENTER);
-					scrollImagen.setViewportView(imagen);
-					validate();
-			
-				interno2.add(split);
-			
-		p.add(interno,BorderLayout.EAST);
-		p.add(interno2,BorderLayout.WEST);
+		JPanel Campos = new JPanel();
+		Campos.setLayout(null);
+		Campos.setBounds(10, 25, 310, 317);
+		p.add(Campos);
 		
+		
+			//Añadimos los campos de texto
+			codAutor = new JTextField();
+			codAutor.setBackground(Color.GRAY);
+			codAutor.setEditable(false);
+			codAutor.setColumns(10);
+			codAutor.setBounds(168, 32, 96, 26);
+			Campos.add(codAutor);
+			
+			nombreAutor = new JTextField();
+			nombreAutor.setColumns(10);
+			nombreAutor.setBounds(168, 61, 96, 26);
+			Campos.add(nombreAutor);
+			
+			nacionalidad = new JTextField();
+			nacionalidad.setColumns(10);
+			nacionalidad.setBounds(168, 90, 96, 26);
+			Campos.add(nacionalidad);
+			
+			codLibro = new JTextField();
+			codLibro.setEditable(false);
+			codLibro.setBackground(Color.gray);
+			codLibro.setColumns(10);
+			codLibro.setBounds(168, 119, 96, 26);
+			Campos.add(codLibro);
+			
+			titulo = new JTextField();
+			titulo.setColumns(10);
+			titulo.setBounds(168, 148, 96, 26);
+			Campos.add(titulo);
+			
+			año = new JTextField();
+			año.setColumns(10);
+			año.setBounds(168, 177, 96, 26);
+			Campos.add(año);
+			
+			url = new JTextArea();
+			url.setBounds(168, 220, 114, 42);
+			Campos.add(url);
+		
+			
+			//Añadimos las etiquetas
+			JLabel lautor = new JLabel("Código autor: ");
+			lautor.setBounds(43, 32, 96, 19);
+			Campos.add(lautor);
+			
+			JLabel lnombre = new JLabel("Nombre autor: ");
+			lnombre.setBounds(43, 61, 96, 19);
+			Campos.add(lnombre);
+			
+			JLabel lnacion = new JLabel("Nacionalidad: ");
+			lnacion.setBounds(43, 93, 96, 19);
+			Campos.add(lnacion);
+			
+			JLabel llibro = new JLabel("Código libro: ");
+			llibro.setBounds(43, 122, 96, 19);
+			Campos.add(llibro);
+			
+			JLabel ltitulo = new JLabel("Titulo: ");
+			ltitulo.setBounds(43, 151, 96, 19);
+			Campos.add(ltitulo);
+			
+			JLabel laño = new JLabel("Año publicación: ");
+			laño.setBounds(43, 180, 96, 19);
+			Campos.add(laño);
+			
+			JLabel limagen = new JLabel("Url imagen: ");
+			limagen.setBounds(43, 226, 96, 19);
+			Campos.add(limagen);
+			
+			
+			//Añadimos los botones
+			bGuardaLibro = new JButton("Guardar");
+			bGuardaLibro.setBounds(330, 52, 85, 21);
+			p.add(bGuardaLibro);
+			
+			bBorraLibro = new JButton("Borrar");
+			bBorraLibro.setBounds(330, 83, 85, 21);
+			bBorraLibro.setEnabled(false);
+			p.add(bBorraLibro);
+			
+			bLimpiar = new JButton("Limpiar");
+			bLimpiar.setBounds(330, 114, 85, 21);
+			p.add(bLimpiar);
+			
+			JSeparator separator = new JSeparator();
+			separator.setBounds(10, 366, 415, 2);
+			p.add(separator);
+			
+	//Creamos el scroll pane para las imagenes de las portadas		
+	JScrollPane scrollImagen = new JScrollPane();
+	scrollImagen.setBounds(435, 10, 387, 525);
+	p.add(scrollImagen);
 	
-		return p;
+	imagen = new JLabel();
+	imagen.setIcon(new ImageIcon());
+	imagen.setHorizontalAlignment(SwingConstants.CENTER);
+	scrollImagen.setViewportView(imagen);
+	
+	//Creamos un modelo de libros para mostrar en los libros disponibles y su scrollPane
+	modelDisponibles.addAll(this.listarLibros());
+	disponibles = new JList<Libro>();
+	disponibles.setModel(modelDisponibles);
+	
+	JScrollPane scrollDisponibles = new JScrollPane(disponibles);
+	scrollDisponibles.setBounds(9, 392, 389, 125);
+	p.add(scrollDisponibles);
+						
+	return p;
 		
 	}
 
 	private JPanel panelSocio() throws SQLException {
 		JPanel p = new JPanel();
-		p.setLayout(new GridLayout(1,1));
+		p.setLayout(null);
 		
-			JPanel flow = new JPanel();
-				JPanel interno = new JPanel();
-				interno.setLayout(new GridLayout(5,2,5,10));
-				interno.setBorder(new TitledBorder("Datos del socio"));
-				
-				interno.add(new JLabel("Código socio: "));
-				codSocio = new JTextField("");
+			//Creamos el panel con los campos de los datos de los usuarios
+			JPanel Campos = new JPanel();
+			Campos.setBorder(new TitledBorder("Datos del socio"));
+			Campos.setBounds(10, 10, 311, 221);
+			p.add(Campos);
+			Campos.setLayout(null);
+			
+				//Creamos las cajas de texto
+				codSocio = new JTextField();
+				codSocio.setBounds(168, 32, 96, 26);
 				codSocio.setEditable(false);
-				interno.add(codSocio);
+				codSocio.setBackground(Color.GRAY);
+				Campos.add(codSocio);
+				codSocio.setColumns(10);
 				
-				interno.add(new JLabel("Nombre: "));
-				nombreSocio = new JTextField("");
-				interno.add(nombreSocio);
+				nombreSocio = new JTextField();
+				nombreSocio.setBounds(168, 61, 96, 26);
+				Campos.add(nombreSocio);
+				nombreSocio.setColumns(10);
 				
-				interno.add(new JLabel("Apellidos: "));
-				apellidos = new JTextField("");
-				interno.add(apellidos);
+				apellidos = new JTextField();
+				apellidos.setBounds(168, 90, 96, 26);
+				Campos.add(apellidos);
+				apellidos.setColumns(10);
 				
-				interno.add(new JLabel("Teléfono: "));
-				telefono = new JTextField("");
-				interno.add(telefono);
+				telefono = new JTextField();
+				telefono.setBounds(168, 119, 96, 26);
+				Campos.add(telefono);
+				telefono.setColumns(10);
 				
-				interno.add(new JLabel("Dirección: "));
-				direccion = new JTextField("");
-				interno.add(direccion);
-			flow.add(interno);
+				direccion = new JTextField();
+				direccion.setBounds(168, 148, 96, 26);
+				Campos.add(direccion);
+				direccion.setColumns(10);
+				
+				//Creamos las etiquetas
+				JLabel lcodSocio = new JLabel("Codigo socio: ");
+				lcodSocio.setBounds(78, 35, 78, 13);
+				Campos.add(lcodSocio);
+				
+				JLabel lnombreSocio = new JLabel("Nombre: ");
+				lnombreSocio.setBounds(78, 64, 78, 13);
+				Campos.add(lnombreSocio);
+				
+				JLabel lApellidos = new JLabel("Apellidos: ");
+				lApellidos.setBounds(78, 93, 78, 13);
+				Campos.add(lApellidos);
+				
+				JLabel lTelefono = new JLabel("Teléfono: ");
+				lTelefono.setBounds(78, 122, 78, 13);
+				Campos.add(lTelefono);
+				
+				JLabel lDirección = new JLabel("Dirección: ");
+				lDirección.setBounds(78, 151, 78, 13);
+				Campos.add(lDirección);
+				
+				//Añadimos los botones
+				bGuardaSocio = new JButton("Guardar");
+				bGuardaSocio.setBounds(21, 190, 85, 21);
+				Campos.add(bGuardaSocio);
+				
+				bBorraSocio = new JButton("Borrar");
+				bBorraSocio.setEnabled(false);
+				bBorraSocio.setBounds(112, 190, 85, 21);
+				Campos.add(bBorraSocio);
+				
+				bLimpiaSocio = new JButton("Limpiar");
+				bLimpiaSocio.setBounds(207, 190, 85, 21);
+				Campos.add(bLimpiaSocio);
+				
+			
+		//Se crea el scrollpane y la tabla para mostrar la informacion de la base de datos
+		JScrollPane scrollSocios = new JScrollPane();
+		scrollSocios.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollSocios.setBounds(331, 10, 504, 553);
+		p.add(scrollSocios);
+		 	
+			//En esta parte preparamos el modelo de la tabla
+			modelTablaSocios = new DefaultTableModel();
+			modelTablaSocios.addColumn("Código Socio");
+			modelTablaSocios.addColumn("Nombre");
+			modelTablaSocios.addColumn("Apellidos");
+			modelTablaSocios.addColumn("Teléfono");
+			modelTablaSocios.addColumn("Dirección");
+			
+			for (Socio s : this.listarSocios()) {
+				modelTablaSocios.addRow(new Object[] {s.getCodSocio(),s.getNombre(),s.getApellidos(),s.getTelefono(),s.getDireccion()});
+			}
+			
 		
-			p.add(flow);
+		
+		tablaSocios = new JTable();
+		scrollSocios.setViewportView(tablaSocios);
+		tablaSocios.setModel(modelTablaSocios);
+		tablaSocios.getColumnModel().getColumn(0).setPreferredWidth(74);
+		tablaSocios.getColumnModel().getColumn(1).setPreferredWidth(63);
+		tablaSocios.getColumnModel().getColumn(2).setPreferredWidth(80);
+		tablaSocios.getColumnModel().getColumn(3).setPreferredWidth(85);
+		tablaSocios.getColumnModel().getColumn(4).setPreferredWidth(83);
 		
 		return p;
 	}
@@ -347,21 +447,117 @@ public class Vista extends JPanel {
 	}
 
 	public void control (Controlador ctr) {
+		//Listeners del panel lirbo
 		disponibles.addListSelectionListener(ctr);
 		bGuardaLibro.addActionListener(ctr);
 		bLimpiar.addActionListener(ctr);
 		bBorraLibro.addActionListener(ctr);
+		
+		//Listeners del panel socios
+		tablaSocios.getSelectionModel().addListSelectionListener(ctr);
+		bGuardaSocio.addActionListener(ctr);
+		bBorraSocio.addActionListener(ctr);
+		bLimpiaSocio.addActionListener(ctr);
+		
+		//Listeners del panel prestamos
 		devolver.addActionListener(ctr);
 		prestar.addActionListener(ctr);
 	}
-	
-	
+
+	public Connection getConexion() {
+		return conexion;
+	}
+
+	public void setConexion(Connection conexion) {
+		this.conexion = conexion;
+	}
+
+	public JTabbedPane getPestañas() {
+		return pestañas;
+	}
+
+	public void setPestañas(JTabbedPane pestañas) {
+		this.pestañas = pestañas;
+	}
+
+	public JTextField getCodAutor() {
+		return codAutor;
+	}
+
+	public void setCodAutor(JTextField codAutor) {
+		this.codAutor = codAutor;
+	}
+
+	public JTextField getNombreAutor() {
+		return nombreAutor;
+	}
+
+	public void setNombreAutor(JTextField nombreAutor) {
+		this.nombreAutor = nombreAutor;
+	}
+
+	public JTextField getNacionalidad() {
+		return nacionalidad;
+	}
+
+	public void setNacionalidad(JTextField nacionalidad) {
+		this.nacionalidad = nacionalidad;
+	}
+
+	public JTextField getCodLibro() {
+		return codLibro;
+	}
+
+	public void setCodLibro(JTextField codLibro) {
+		this.codLibro = codLibro;
+	}
+
+	public JTextField getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(JTextField titulo) {
+		this.titulo = titulo;
+	}
+
+	public JTextField getAño() {
+		return año;
+	}
+
+	public void setAño(JTextField año) {
+		this.año = año;
+	}
+
+	public JTextArea getUrl() {
+		return url;
+	}
+
+	public void setUrl(JTextArea url) {
+		this.url = url;
+	}
+
+	public JLabel getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(JLabel imagen) {
+		this.imagen = imagen;
+	}
+
 	public JList<Libro> getDisponibles() {
 		return disponibles;
 	}
 
 	public void setDisponibles(JList<Libro> disponibles) {
 		this.disponibles = disponibles;
+	}
+
+	public DefaultListModel<Libro> getModelDisponibles() {
+		return modelDisponibles;
+	}
+
+	public void setModelDisponibles(DefaultListModel<Libro> modelDisponibles) {
+		this.modelDisponibles = modelDisponibles;
 	}
 
 	public JButton getbGuardaLibro() {
@@ -378,6 +574,14 @@ public class Vista extends JPanel {
 
 	public void setbBorraLibro(JButton bBorraLibro) {
 		this.bBorraLibro = bBorraLibro;
+	}
+
+	public JButton getbLimpiar() {
+		return bLimpiar;
+	}
+
+	public void setbLimpiar(JButton bLimpiar) {
+		this.bLimpiar = bLimpiar;
 	}
 
 	public JTextField getCodSocio() {
@@ -428,6 +632,30 @@ public class Vista extends JPanel {
 		this.socios = socios;
 	}
 
+	public DefaultListModel<Socio> getModelSocios() {
+		return modelSocios;
+	}
+
+	public void setModelSocios(DefaultListModel<Socio> modelSocios) {
+		this.modelSocios = modelSocios;
+	}
+
+	public JList<Libro> getLibros() {
+		return libros;
+	}
+
+	public void setLibros(JList<Libro> libros) {
+		this.libros = libros;
+	}
+
+	public DefaultListModel<Prestamo> getModelPrestamos() {
+		return modelPrestamos;
+	}
+
+	public void setModelPrestamos(DefaultListModel<Prestamo> modelPrestamos) {
+		this.modelPrestamos = modelPrestamos;
+	}
+
 	public JList<Prestamo> getPrestamos() {
 		return prestamos;
 	}
@@ -456,127 +684,46 @@ public class Vista extends JPanel {
 		return serialVersionUID;
 	}
 
-	public Connection getConexion() {
-		return conexion;
+	public JTable getTablaSocios() {
+		return tablaSocios;
 	}
 
-	public void setConexion(Connection conexion) {
-		this.conexion = conexion;
+	public void setTablaSocios(JTable tablaSocios) {
+		this.tablaSocios = tablaSocios;
 	}
 
-	public JTabbedPane getPestañas() {
-		return pestañas;
+	public DefaultTableModel getModelTablaSocios() {
+		return modelTablaSocios;
 	}
 
-	public void setPestañas(JTabbedPane pestañas) {
-		this.pestañas = pestañas;
+	public void setModelTablaSocios(DefaultTableModel modelTablaSocios) {
+		this.modelTablaSocios = modelTablaSocios;
 	}
 
-	public JTextField getNombreAutor() {
-		return nombreAutor;
+	public JButton getbGuardaSocio() {
+		return bGuardaSocio;
 	}
 
-	public void setNombreAutor(JTextField nombreAutor) {
-		this.nombreAutor = nombreAutor;
+	public void setbGuardaSocio(JButton bGuardaSocio) {
+		this.bGuardaSocio = bGuardaSocio;
 	}
 
-	public JTextField getNacionalidad() {
-		return nacionalidad;
+	public JButton getbBorraSocio() {
+		return bBorraSocio;
 	}
 
-	public void setNacionalidad(JTextField nacionalidad) {
-		this.nacionalidad = nacionalidad;
+	public void setbBorraSocio(JButton bBorraSocio) {
+		this.bBorraSocio = bBorraSocio;
 	}
 
-	public JTextField getTitulo() {
-		return titulo;
+	public JButton getbLimpiaSocio() {
+		return bLimpiaSocio;
 	}
 
-	public void setTitulo(JTextField titulo) {
-		this.titulo = titulo;
+	public void setbLimpiaSocio(JButton bLimpiaSocio) {
+		this.bLimpiaSocio = bLimpiaSocio;
 	}
-
-	public JTextField getAño() {
-		return año;
-	}
-
-	public void setAño(JTextField año) {
-		this.año = año;
-	}
-
-	public JList<Libro> getLibros() {
-		return libros;
-	}
-
-	public void setLibros(JList<Libro> libros) {
-		this.libros = libros;
-	}
-
-	public JTextField getCodAutor() {
-		return codAutor;
-	}
-
-	public void setCodAutor(JTextField codAutor) {
-		this.codAutor = codAutor;
-	}
-
-	public JTextField getCodLibro() {
-		return codLibro;
-	}
-
-	public void setCodLibro(JTextField codLibro) {
-		this.codLibro = codLibro;
-	}
-
-
-	public DefaultListModel<Libro> getModelDisponibles() {
-		return modelDisponibles;
-	}
-
-	public void setModelDisponibles(DefaultListModel<Libro> modelDisponibles) {
-		this.modelDisponibles = modelDisponibles;
-	}
-
-	public DefaultListModel<Socio> getModelSocios() {
-		return modelSocios;
-	}
-
-	public void setModelSocios(DefaultListModel<Socio> modelSocios) {
-		this.modelSocios = modelSocios;
-	}
-
-	public DefaultListModel<Prestamo> getModelPrestamos() {
-		return modelPrestamos;
-	}
-
-	public void setModelPrestamos(DefaultListModel<Prestamo> modelPrestamos) {
-		this.modelPrestamos = modelPrestamos;
-	}
-
-	public JTextArea getUrl() {
-		return url;
-	}
-
-	public void setUrl(JTextArea url) {
-		this.url = url;
-	}
-
-	public JButton getbLimpiar() {
-		return bLimpiar;
-	}
-
-	public void setbLimpiar(JButton bLimpiar) {
-		this.bLimpiar = bLimpiar;
-	}
-
-	public JLabel getImagen() {
-		return imagen;
-	}
-
-	public void setImagen(JLabel imagen) {
-		this.imagen = imagen;
-	}
-
+	
 	
 
 }
