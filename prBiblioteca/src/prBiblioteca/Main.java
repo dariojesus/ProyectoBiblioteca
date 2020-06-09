@@ -27,12 +27,12 @@ public class Main {
 				Controlador c = new Controlador(miVista);
 				miVista.control(c);
 				
-				JFrame ventana = new JFrame("Sistema gestor de biblioteca");
+				JFrame ventana = new JFrame();
+				ventana.setIconImage(null);
 				ventana.setBackground(new Color(255, 255, 255));
-				ventana.setPreferredSize(new Dimension(988, 623));
+				ventana.setPreferredSize(new Dimension(988, 619));
 				ventana.setContentPane(miVista);
-				
-				
+				ventana.setResizable(false);
 				ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				ventana.pack();
 				ventana.setVisible(true);

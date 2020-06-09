@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -95,7 +96,33 @@ public class Controlador implements ActionListener, ListSelectionListener, Mouse
 	//Métodos de raton
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		
+		JPanel pp = (JPanel) e.getSource();
+		
+		miVista.getPortada().setVisible(false);
+		
+		//Se muestra visible el panel seleccionado por el menu lateral
+		
+		if (pp == miVista.getBtn_panel_libro()) {
 		miVista.getPanelLibros().setVisible(true);
+		miVista.getPanelSocios().setVisible(false);
+		miVista.getPanelPrestamos().setVisible(false);
+
+		}
+		
+		else if (pp == miVista.getBtn_panel_socios()) {			
+		miVista.getPanelLibros().setVisible(false);
+		miVista.getPanelSocios().setVisible(true);
+		miVista.getPanelPrestamos().setVisible(false);
+
+		}
+		
+		else {
+		miVista.getPanelLibros().setVisible(false);
+		miVista.getPanelSocios().setVisible(false);
+		miVista.getPanelPrestamos().setVisible(true);
+
+		}
 		
 	}
 
@@ -188,7 +215,7 @@ public class Controlador implements ActionListener, ListSelectionListener, Mouse
 		miVista.getbGuardaLibro().setEnabled(true);
 		miVista.getbBorraLibro().setEnabled(false);
 		miVista.getDisponibles().clearSelection();
-		miVista.getImagen().setIcon(null);
+		miVista.getImagen().setIcon(new ImageIcon("./imagenes/libro.jpg"));
 		
 		return "Campos del formulario limpiados";
 	}
