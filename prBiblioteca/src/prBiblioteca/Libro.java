@@ -23,7 +23,7 @@ public class Libro {
 	}
 	
 	public String toString() {
-		return this.getTitulo()+" - "+this.getPublicacion()+" ("+this.getAutor()+" , "+this.getNacionalidad()+")";
+		return this.getTitulo();
 		}
 
 

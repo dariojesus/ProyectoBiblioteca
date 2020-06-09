@@ -1,5 +1,6 @@
 package prBiblioteca;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,10 +28,12 @@ public class Main {
 				miVista.control(c);
 				
 				JFrame ventana = new JFrame("Sistema gestor de biblioteca");
-				ventana.setResizable(false);
+				ventana.setBackground(new Color(255, 255, 255));
+				ventana.setPreferredSize(new Dimension(988, 623));
 				ventana.setContentPane(miVista);
+				
+				
 				ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				ventana.setPreferredSize(new Dimension(990,610));
 				ventana.pack();
 				ventana.setVisible(true);
 				

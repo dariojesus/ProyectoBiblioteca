@@ -1,7 +1,10 @@
 package prBiblioteca;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -12,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class Controlador implements ActionListener, ListSelectionListener {
+public class Controlador implements ActionListener, ListSelectionListener, MouseListener {
 
 	private Vista miVista;
 	private Modelo miModelo;
@@ -24,6 +27,7 @@ public class Controlador implements ActionListener, ListSelectionListener {
 		
 	}
 	
+	//Metodo de accion de los botones
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -66,6 +70,7 @@ public class Controlador implements ActionListener, ListSelectionListener {
 		
 	}
 	
+	//Metodo de las listas y tablas (seleccionables)
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 				
@@ -87,6 +92,37 @@ public class Controlador implements ActionListener, ListSelectionListener {
 			}
 		}
 	
+	//Métodos de raton
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		miVista.getPanelLibros().setVisible(true);
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		e.getComponent().setBackground(new Color(38,38,38));
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		e.getComponent().setBackground((new Color(89, 89, 89)));
+	}
+	
+	//Estos no están programados
+	
+	@Override
+	public void mousePressed(MouseEvent e) {}
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+	
+	/**
+	 * Métodos de utilidad privados que llaman a miModelo
+	 * 
+	 */
+	
+	//Correspondientes al panel de libros
 	private void cogeDatosLibro() throws MalformedURLException {
 		Libro l = miVista.getDisponibles().getSelectedValue();
 		
@@ -102,18 +138,6 @@ public class Controlador implements ActionListener, ListSelectionListener {
 		miVista.getbBorraLibro().setEnabled(true);
 	}
 	
-	private void cogeDatosSocio() {
-		int fila = miVista.getTablaSocios().getSelectedRow();
-		
-		miVista.getCodSocio().setText(String.valueOf(miVista.getModelTablaSocios().getValueAt(fila, 0)));
-		miVista.getNombreSocio().setText(String.valueOf(miVista.getModelTablaSocios().getValueAt(fila, 1)));
-		miVista.getApellidos().setText(String.valueOf(miVista.getModelTablaSocios().getValueAt(fila, 2)));
-		miVista.getTelefono().setText(String.valueOf(miVista.getModelTablaSocios().getValueAt(fila, 3)));
-		miVista.getDireccion().setText(String.valueOf(miVista.getModelTablaSocios().getValueAt(fila, 4)));
-		miVista.getbBorraSocio().setEnabled(true);
-		miVista.getbGuardaSocio().setText("Editar");
-	}
-
 	private String guardaLibro() throws SQLException {
 		String msg;
 		
@@ -164,8 +188,22 @@ public class Controlador implements ActionListener, ListSelectionListener {
 		miVista.getbGuardaLibro().setEnabled(true);
 		miVista.getbBorraLibro().setEnabled(false);
 		miVista.getDisponibles().clearSelection();
+		miVista.getImagen().setIcon(null);
 		
 		return "Campos del formulario limpiados";
+	}
+	
+	//Correspondientes al panel de socios
+	private void cogeDatosSocio() {
+		int fila = miVista.getTablaSocios().getSelectedRow();
+		
+		miVista.getCodSocio().setText(String.valueOf(miVista.getModelTablaSocios().getValueAt(fila, 0)));
+		miVista.getNombreSocio().setText(String.valueOf(miVista.getModelTablaSocios().getValueAt(fila, 1)));
+		miVista.getApellidos().setText(String.valueOf(miVista.getModelTablaSocios().getValueAt(fila, 2)));
+		miVista.getTelefono().setText(String.valueOf(miVista.getModelTablaSocios().getValueAt(fila, 3)));
+		miVista.getDireccion().setText(String.valueOf(miVista.getModelTablaSocios().getValueAt(fila, 4)));
+		miVista.getbBorraSocio().setEnabled(true);
+		miVista.getbGuardaSocio().setText("Editar");
 	}
 	
 	private String creaSocio() throws SQLException {
@@ -183,7 +221,6 @@ public class Controlador implements ActionListener, ListSelectionListener {
 			
 		
 		miVista.getModelTablaSocios().addRow(new Object[] {s.getCodSocio(),s.getNombre(),s.getApellidos(),s.getTelefono(),s.getDireccion()});
-		miVista.getModelSocios().addElement(s);
 		this.limpiaSocio();
 		
 		return "Se ha editado o creado un socio";
@@ -204,7 +241,6 @@ public class Controlador implements ActionListener, ListSelectionListener {
 			
 			msg = miModelo.borrarSocio(s.getCodSocio());
 			miVista.getModelTablaSocios().removeRow(fila);
-			miVista.getModelSocios().removeElement(s);
 			this.limpiaSocio();
 		
 		} catch (NumberFormatException | SQLException e) {
@@ -230,30 +266,60 @@ public class Controlador implements ActionListener, ListSelectionListener {
 		
 	}
 	
+	//Correspondientes al panel de prestamos
 	private String prestaLibro() throws SQLException {
-		Libro l = miVista.getLibros().getSelectedValue();
-		Socio s = miVista.getSocios().getSelectedValue();
-		Prestamo p = miModelo.prestarLibro(l,s);
 		
-		String msg = "LIBRO PRESTADO: "+l.getTitulo()+
+		try {
+			
+			int fila = miVista.getTableSocio().getSelectedRow();
+			
+			Socio s = new Socio((Integer)miVista.getModelTablaSocios().getValueAt(fila,0),
+								(String)miVista.getModelTablaSocios().getValueAt(fila,1),
+								(String)miVista.getModelTablaSocios().getValueAt(fila,2),
+								(String)miVista.getModelTablaSocios().getValueAt(fila,3),
+								(String)miVista.getModelTablaSocios().getValueAt(fila,4));
+			
+			
+			Libro l = miVista.getListaLibros().getSelectedValue();
+			
+			Prestamo p = miModelo.prestarLibro(l,s);
+			
+			miVista.getModelTablaPrestamos().addRow(new Object[] {p.getCodPrestamo(),p.getTitulo(),p.getNombre(),p.getApellido(),p.getFecha(),p.getDevolucion()});
+			miVista.getTableSocio().clearSelection();
+			miVista.getListaLibros().clearSelection();
+			
+			return "LIBRO PRESTADO: "+l.getTitulo()+
 					" \nAL SOCIO: "+s.getNombre()+" "+s.getApellidos()+
 					" \nFECHA PRESTAMO: "+p.getFecha()+
-					" \nFECHA DEVOLUCIÓN: "+p.getDevolucion();		
+					" \nFECHA DEVOLUCIÓN: "+p.getDevolucion();
+			
+		}catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+			JOptionPane.showMessageDialog(miVista, "Asegurese de seleccionar un socio y un libro", "Error", JOptionPane.ERROR_MESSAGE);
+			return "Se ha producido un error, intentelo de nuevo";
+		}
 		
-
-		miVista.getModelPrestamos().addElement(p);
-		
-		return msg;
 	}
 	
 	private String devolverLibro() throws SQLException {
-		Prestamo p = miVista.getPrestamos().getSelectedValue();
-		String msg = miModelo.devolverLibro(p);
-		miVista.getModelPrestamos().removeElement(p);
 		
-		return msg;
+		try {
+			
+			int fila = miVista.getTablePrestamos().getSelectedRow();
+			
+			Prestamo p = new Prestamo ((Integer)miVista.getModelTablaPrestamos().getValueAt(fila,0),
+									   (String)miVista.getModelTablaPrestamos().getValueAt(fila,1),
+									   (String)miVista.getModelTablaPrestamos().getValueAt(fila,2),
+									   (String)miVista.getModelTablaPrestamos().getValueAt(fila,3),
+									   (String)miVista.getModelTablaPrestamos().getValueAt(fila,4),
+									   (String)miVista.getModelTablaPrestamos().getValueAt(fila,5));
+			
+			miVista.getModelTablaPrestamos().removeRow(miVista.getTablePrestamos().getSelectedRow());
+			
+			return miModelo.devolverLibro(p);
+			
+		} catch (ArrayIndexOutOfBoundsException e) {}
+		JOptionPane.showMessageDialog(miVista, "Asegurese de seleccionar un libro a devolver", "Error", JOptionPane.ERROR_MESSAGE);
+		return "Se ha producido un error, intentelo de nuevo";
 	}
-
-	
 
 }

@@ -123,9 +123,13 @@ public class Modelo {
 	//Acciones del panel prestamos
 
 	public Prestamo prestarLibro(Libro l, Socio s) throws SQLException {
+		//Para la fecha de hoy utilizamos una variable
+		Calendar hoy = Calendar.getInstance();
+		Date fecha = new Date(hoy.getTime().getTime());
 		
-		Date fecha = new Date(Calendar.getInstance().getTime().getTime());
-		Date fechaFin = new Date(Calendar.getInstance().getTime().getTime());
+		//Para la fecha de devolucio (1 mes) se lo agregamos a la de hoy
+		hoy.add(Calendar.MONTH,1);
+		Date fechaFin = new Date(hoy.getTime().getTime());
 		
 		st.executeUpdate("INSERT INTO mibase.prestamos (fecha_prestamo,fecha_devolucion,codSocio,codLibro) "
 				+ "values ('"+fecha+"','"+fecha+"','"+s.getCodSocio()+"','"+l.getCodLibro()+"')");
