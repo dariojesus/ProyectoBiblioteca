@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -322,6 +321,7 @@ public class Vista extends JPanel {
 			bBorraLibro.setBackground(new Color(166, 166, 166));
 			bBorraLibro.setBorder(null);
 			bBorraLibro.setBounds(95, 325, 96, 21);
+			bBorraLibro.setEnabled(false);
 			datos.add(bBorraLibro);
 			
 			bLimpiar = new JButton("Limpiar");

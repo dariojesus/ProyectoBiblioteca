@@ -30,7 +30,10 @@ public class Modelo {
 	}
 	
 	//Métodos útiles del modelo
-	public void cierraConexion() throws SQLException {conexion.close();System.out.println("Conexión cerrada");}
+	public void cierraConexion() throws SQLException {
+		conexion.close();System.out.println("Conexión cerrada");
+		System.exit(0);
+		}
 	
 	public void creaConsulta() throws SQLException {res = st.executeQuery("SELECT * FROM AUTOR");}
 	
@@ -41,26 +44,29 @@ public class Modelo {
 	
 	//Acciones del panel libros
 	
-	public Libro crearLibro(String autor, String nacional, String titulo, String año, String imagen) throws SQLException {
+	public Libro crearLibro(String autor, String nacional, String titulo, String año, String imagen) throws SQLException, ExcepcionBiblioteca {
 		
-		int codAutor = this.existeAutor(autor);
-		int codUltimo = codAutor;
-		int codLibro;
-		
-		if (codAutor == -1) {
-			st.executeUpdate("INSERT INTO autor (nombre,nacionalidad) values ('"+autor+"','"+nacional+"')");
-			codUltimo = this.existeAutor(autor);
-		}
-						
-		st.executeUpdate("INSERT INTO libro (titulo,publicacion,codAutor,imagen) values ('"+titulo+"','"+año+"',"+codUltimo+",'"+imagen+"')");
-		
-		res = st.executeQuery("SELECT MAX(codLibro) from libro");
-		res.next();
-		codLibro = res.getInt(1);
-		
-		Libro l = new Libro(codUltimo,codLibro,autor,nacional,titulo,año,imagen);
-		
-		return l;
+			if ((autor.isBlank() || nacional.isBlank()) || (titulo.isBlank() || año.isBlank()))
+				throw new ExcepcionBiblioteca("Los campos autor, nacionalidad, titulo y año son obigatorios.");
+			
+			int codAutor = this.existeAutor(autor);
+			int codUltimo = codAutor;
+			int codLibro;
+			
+			if (codAutor == -1) {
+				st.executeUpdate("INSERT INTO autor (nombre,nacionalidad) values ('"+autor+"','"+nacional+"')");
+				codUltimo = this.existeAutor(autor);
+			}
+							
+			st.executeUpdate("INSERT INTO libro (titulo,publicacion,codAutor,imagen) values ('"+titulo+"','"+año+"',"+codUltimo+",'"+imagen+"')");
+			
+			res = st.executeQuery("SELECT MAX(codLibro) from libro");
+			res.next();
+			codLibro = res.getInt(1);
+			
+			Libro l = new Libro(codUltimo,codLibro,autor,nacional,titulo,año,imagen);
+			
+			return l;
 
 	}
 	
@@ -97,7 +103,10 @@ public class Modelo {
 		return "Socio con código: "+codigo+" borrado con éxito";
 	}
 	
-	public Socio creaSocio(int codigo, String nombre, String apellidos, String telefono, String direccion) throws SQLException {
+	public Socio creaSocio(int codigo, String nombre, String apellidos, String telefono, String direccion) throws SQLException, ExcepcionBiblioteca {
+		
+		if ((nombre.isBlank() || apellidos.isBlank()) || (telefono.isBlank() || direccion.isBlank()))
+			throw new ExcepcionBiblioteca("Los campos nombre, apellidos, telefono y direccion son obligatorios.");
 		
 		//No ha entrado un código válido (campo en blanco) por lo cual se creará un nuevo usuario
 		if (codigo ==-1) {
@@ -152,7 +161,7 @@ public class Modelo {
 		this.creaConsulta();
 		
 		return "LIBRO: "+p.getTitulo()+" \n"+
-			    "PRESTADO A:"+p.getNombre()+" "+p.getApellido()+" \n"+
+			    "PRESTADO A: "+p.getNombre()+" "+p.getApellido()+" \n"+
 			    "HA SIDO DEVUELTO.";
 		
 	}

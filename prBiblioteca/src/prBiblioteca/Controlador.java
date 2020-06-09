@@ -89,8 +89,9 @@ public class Controlador implements ActionListener, ListSelectionListener, Mouse
 			} 
 			
 			catch (MalformedURLException e1) {
-				e1.printStackTrace();
+				miVista.getImagen().setIcon(null);
 			}
+			
 		}
 	
 	//Métodos de raton
@@ -166,21 +167,27 @@ public class Controlador implements ActionListener, ListSelectionListener, Mouse
 	}
 	
 	private String guardaLibro() throws SQLException {
-		String msg;
+		String msg = "Se ha producido un error intentelo de nuevo";
 		
-		Libro l = miModelo.crearLibro(miVista.getNombreAutor().getText(), 
-										miVista.getNacionalidad().getText(), 
-										miVista.getTitulo().getText(), 
-										miVista.getAño().getText(),
-										miVista.getUrl().getText());
-		
-		msg = "LIBRO: "+l.getTitulo()+"\nDEL AUTOR: "+l.getAutor()+"\nDEL AÑO: "+l.getPublicacion()+"\nGUARDADO";
-		
-		this.limpia();
-				
-		miVista.getModelDisponibles().addElement(l);
-	
-		return msg;
+		try {
+			Libro l = miModelo.crearLibro(miVista.getNombreAutor().getText(), 
+					miVista.getNacionalidad().getText(), 
+					miVista.getTitulo().getText(), 
+					miVista.getAño().getText(),
+					miVista.getUrl().getText());
+
+			msg = "LIBRO: "+l.getTitulo()+"\nDEL AUTOR: "+l.getAutor()+"\nDEL AÑO: "+l.getPublicacion()+"\nGUARDADO";
+
+			this.limpia();
+
+			miVista.getModelDisponibles().addElement(l);
+			return msg;
+
+		} catch (ExcepcionBiblioteca e) {
+			JOptionPane.showMessageDialog(miVista,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			return msg;
+		}		
+
 	}
 	
 	private String borraLibro(){
@@ -234,23 +241,34 @@ public class Controlador implements ActionListener, ListSelectionListener, Mouse
 	}
 	
 	private String creaSocio() throws SQLException {
-
-		int codigo = miVista.getCodSocio().getText().isEmpty()?-1:Integer.parseInt(miVista.getCodSocio().getText());
 		
-		Socio s = miModelo.creaSocio(codigo,
-									miVista.getNombreSocio().getText(),
-									miVista.getApellidos().getText(),
-									miVista.getTelefono().getText(),
-									miVista.getDireccion().getText());
+		String msg = "Se ha producido un error intentelo de nuevo.";
 		
-		if (codigo!=-1)
-			miVista.getModelTablaSocios().removeRow(miVista.getTablaSocios().getSelectedRow());
+		try {
 			
-		
-		miVista.getModelTablaSocios().addRow(new Object[] {s.getCodSocio(),s.getNombre(),s.getApellidos(),s.getTelefono(),s.getDireccion()});
-		this.limpiaSocio();
-		
-		return "Se ha editado o creado un socio";
+			int codigo = miVista.getCodSocio().getText().isEmpty()?-1:Integer.parseInt(miVista.getCodSocio().getText());
+			
+			Socio s = miModelo.creaSocio(codigo,
+										miVista.getNombreSocio().getText(),
+										miVista.getApellidos().getText(),
+										miVista.getTelefono().getText(),
+										miVista.getDireccion().getText());
+			
+			if (codigo!=-1)
+				miVista.getModelTablaSocios().removeRow(miVista.getTablaSocios().getSelectedRow());
+				
+			
+			miVista.getModelTablaSocios().addRow(new Object[] {s.getCodSocio(),s.getNombre(),s.getApellidos(),s.getTelefono(),s.getDireccion()});
+			this.limpiaSocio();
+			
+			return "Se ha realizado la operacion correctamente";
+			
+		}catch(ExcepcionBiblioteca e) {
+			JOptionPane.showMessageDialog(miVista, e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+			return msg;
+		}
+
+
 		
 	}
 	
@@ -347,6 +365,24 @@ public class Controlador implements ActionListener, ListSelectionListener, Mouse
 		} catch (ArrayIndexOutOfBoundsException e) {}
 		JOptionPane.showMessageDialog(miVista, "Asegurese de seleccionar un libro a devolver", "Error", JOptionPane.ERROR_MESSAGE);
 		return "Se ha producido un error, intentelo de nuevo";
+	}
+
+	
+	//Getters y setters
+	public Vista getMiVista() {
+		return miVista;
+	}
+
+	public void setMiVista(Vista miVista) {
+		this.miVista = miVista;
+	}
+
+	public Modelo getMiModelo() {
+		return miModelo;
+	}
+
+	public void setMiModelo(Modelo miModelo) {
+		this.miModelo = miModelo;
 	}
 
 }
