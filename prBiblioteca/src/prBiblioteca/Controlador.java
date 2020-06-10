@@ -5,10 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -16,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class Controlador implements ActionListener, ListSelectionListener, MouseListener {
+public class Controlador extends WindowAdapter implements ActionListener, ListSelectionListener, MouseListener {
 
 	private Vista miVista;
 	private Modelo miModelo;
@@ -138,12 +139,27 @@ public class Controlador implements ActionListener, ListSelectionListener, Mouse
 		e.getComponent().setBackground((new Color(89, 89, 89)));
 	}
 	
-	//Estos no están programados
+		//Estos no están programados
 	
 	@Override
 	public void mousePressed(MouseEvent e) {}
 	@Override
 	public void mouseReleased(MouseEvent e) {}
+	
+	
+	//Método para cerrar conexion y ventana
+	@Override
+	public void windowClosing(WindowEvent e) {
+		
+		try {
+			miModelo.cierraStatement();
+			miModelo.cierraConexion();
+		} catch (SQLException e1) {}
+		
+		System.exit(0);
+		
+	}
+	
 	
 	/**
 	 * Métodos de utilidad privados que llaman a miModelo
@@ -203,7 +219,7 @@ public class Controlador implements ActionListener, ListSelectionListener, Mouse
 			
 			
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(miVista, "No se puede borrar un libro que se encuentra prestado.","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(miVista,"No se puede borrar un libro que se encuentra prestado.","Error",JOptionPane.ERROR_MESSAGE);
 			msg = this.limpia();
 		}
 		

@@ -61,12 +61,4 @@ public class Prestamo {
 	public void setDevolucion(String devolucion) {
 		this.devolucion = devolucion;
 	}
-
-	
-	
-	
-	
-	
-	
-
 }

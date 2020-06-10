@@ -8,7 +8,6 @@ public class Socio {
 	private String telefono;
 	private String direccion;
 	
-	
 	public Socio(int codSocio, String nombre, String apellidos, String telefono, String direccion) {
 		super();
 		this.codSocio = codSocio;
@@ -71,9 +70,4 @@ public class Socio {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-	
-	
-	
-	
-
 }

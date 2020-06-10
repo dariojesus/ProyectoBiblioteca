@@ -7,10 +7,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.SQLException;
-
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
+
 
 public class DialogoLogin extends JDialog implements ActionListener {
 
@@ -26,7 +24,7 @@ public class DialogoLogin extends JDialog implements ActionListener {
 	
 	public DialogoLogin() {
 		this.setModal(true);
-		this.setTitle("Login gestión biblioteca");
+		this.setTitle("Autenticación");
 		this.setLayout(new BorderLayout(50,50));
 		this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		
@@ -37,7 +35,6 @@ public class DialogoLogin extends JDialog implements ActionListener {
 			//Preparación del panel compuesto de autentificación
 			JPanel interno = new JPanel();
 			interno.setLayout(new GridLayout(2,2));
-			interno.setBorder(new TitledBorder("Autentificación"));
 			
 				//Preparación de la etiqueta y panel para el nombre
 				JLabel nom = new JLabel("Nombre: ");
@@ -85,7 +82,8 @@ public class DialogoLogin extends JDialog implements ActionListener {
 		this.add(principal);
 
 		//Se establecen las configuraciones finales
-		this.setPreferredSize(new Dimension (250,170));
+		this.setLocationRelativeTo(null);
+		this.setPreferredSize(new Dimension (250,140));
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
@@ -106,16 +104,13 @@ public class DialogoLogin extends JDialog implements ActionListener {
 			
 				try {
 					conexion = LibreriaBaseDatos.conecta(bd, this.nombre.getText(), contra);
+					this.setVisible(false);
 				
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+					JOptionPane.showMessageDialog(this, "Ha ocurrido un eror al conectarse, revise su usuario y contraseña","Error",JOptionPane.ERROR_MESSAGE);
+				} 
 				
-				this.setVisible(false);
+				
 		}
 		
 	}

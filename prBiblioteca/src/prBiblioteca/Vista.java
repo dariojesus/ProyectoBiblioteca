@@ -19,7 +19,16 @@ import javax.swing.table.DefaultTableModel;
 
 public class Vista extends JPanel {
 	
+	//Constantes de la vista
+	private static final MatteBorder BORDELINEADO = new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0));
+	private static final Color NARANJA = new Color(242,159,5);
+	private static final Color GRISMEDIO = new Color(166, 166, 166);
+	private static final Color BLANCOROTO = new Color(242, 242, 242);
+	private static final Color GRISCLARO = new Color(89, 89, 89);
+	private static final Color COLORBLANCO = new Color(255, 255, 255);
 	private static final long serialVersionUID = 1L;
+	
+	
 	private Connection conexion = null;
 	
 	//Campos accesibles del panel principal (menu lateral)
@@ -74,7 +83,7 @@ public class Vista extends JPanel {
 		
 		
 		//Configuraciones iniciales del panel de fondo
-		this.setBackground(new Color(255, 255, 255));
+		this.setBackground(COLORBLANCO);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setLayout(null);
 		
@@ -105,7 +114,7 @@ public class Vista extends JPanel {
 	private JPanel panelPortada() {
 		JPanel p = new JPanel();
 		p.setBorder(null);
-		p.setBackground(new Color(255, 255, 255));
+		p.setBackground(COLORBLANCO);
 		p.setBounds(231, 0, 743, 583);
 		p.setLayout(null);
 		
@@ -121,19 +130,19 @@ public class Vista extends JPanel {
 		
 		
 		JPanel lateral = new JPanel();
-		lateral.setBackground(new Color(89, 89, 89));
+		lateral.setBackground(GRISCLARO);
 		lateral.setBounds(0, 0, 233, 602);
 		lateral.setLayout(null);
 			
 			//Cabecera del panel lateral
 			JLabel ltitulo1 = new JLabel("Sistema de Gestión");
-			ltitulo1.setForeground(new Color(255, 255, 255));
+			ltitulo1.setForeground(COLORBLANCO);
 			ltitulo1.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
 			ltitulo1.setBounds(10, 28, 217, 56);
 			lateral.add(ltitulo1);
 				
 			JLabel ltitulo2 = new JLabel("Biblioteca");
-			ltitulo2.setForeground(new Color(255, 255, 255));
+			ltitulo2.setForeground(COLORBLANCO);
 			ltitulo2.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
 			ltitulo2.setBounds(10, 56, 217, 56);
 			lateral.add(ltitulo2);
@@ -144,7 +153,7 @@ public class Vista extends JPanel {
 			
 			//Botón de libros lateral
 			btn_panel_libro = new JPanel();
-			btn_panel_libro.setBackground(new Color(89, 89, 89));
+			btn_panel_libro.setBackground(GRISCLARO);
 			btn_panel_libro.setBounds(0, 207, 232, 56);
 			lateral.add(btn_panel_libro);
 			btn_panel_libro.setLayout(new BoxLayout(btn_panel_libro, BoxLayout.X_AXIS));
@@ -158,7 +167,7 @@ public class Vista extends JPanel {
 				btn_panel_libro.add(icon1);
 					
 				JLabel label1 = new JLabel("Gestión de libros");
-				label1.setForeground(new Color(255, 255, 255));
+				label1.setForeground(COLORBLANCO);
 				label1.setFont(new Font("Segoe UI", Font.BOLD, 12));
 				label1.setAlignmentX(0.5f);
 				btn_panel_libro.add(label1);
@@ -166,7 +175,7 @@ public class Vista extends JPanel {
 				
 			//Boton de socios lateral
 			btn_panel_socios = new JPanel();
-			btn_panel_socios.setBackground(new Color(89, 89, 89));
+			btn_panel_socios.setBackground(GRISCLARO);
 			btn_panel_socios.setBounds(0, 271, 232, 56);
 			lateral.add(btn_panel_socios);
 			btn_panel_socios.setLayout(new BoxLayout(btn_panel_socios, BoxLayout.X_AXIS));
@@ -180,14 +189,14 @@ public class Vista extends JPanel {
 				btn_panel_socios.add(icon2);
 					
 				JLabel label2 = new JLabel("Administración de socios");
-				label2.setForeground(new Color(255, 255, 255));
+				label2.setForeground(COLORBLANCO);
 				label2.setFont(new Font("Segoe UI", Font.BOLD, 12));
 				label2.setAlignmentX(0.5f);
 				btn_panel_socios.add(label2);
 				
 			//Boton de prestamos lateral
 			btn_panel_prestamos = new JPanel();
-			btn_panel_prestamos.setBackground(new Color(89, 89, 89));
+			btn_panel_prestamos.setBackground(GRISCLARO);
 			btn_panel_prestamos.setBounds(0, 337, 232, 56);
 			lateral.add(btn_panel_prestamos);
 			btn_panel_prestamos.setLayout(new BoxLayout(btn_panel_prestamos, BoxLayout.X_AXIS));
@@ -201,7 +210,7 @@ public class Vista extends JPanel {
 				btn_panel_prestamos.add(icon3);
 					
 				JLabel label3 = new JLabel("Prestamos y devoluciones");
-				label3.setForeground(new Color(255, 255, 255));
+				label3.setForeground(COLORBLANCO);
 				label3.setFont(new Font("Segoe UI", Font.BOLD, 12));
 				label3.setAlignmentX(0.5f);
 				btn_panel_prestamos.add(label3);
@@ -215,13 +224,13 @@ public class Vista extends JPanel {
 		//Creamos los paneles y subpaneles del panel de opciones libro
 		JPanel p = new JPanel();
 		p.setBorder(null);
-		p.setBackground(new Color(255, 255, 255));
+		p.setBackground(COLORBLANCO);
 		p.setBounds(255, 0, 709, 583);
 		p.setLayout(null);
 		
 		JPanel datos = new JPanel();
 		datos.setBorder(null);
-		datos.setBackground(new Color(255, 255, 255));
+		datos.setBackground(COLORBLANCO);
 		datos.setBounds(376, 49, 286, 356);
 		p.add(datos);
 		datos.setLayout(null);
@@ -230,52 +239,52 @@ public class Vista extends JPanel {
 			//Añadimos los campos de texto
 			codAutor = new JTextField();
 			codAutor.setEditable(false);
-			codAutor.setBackground(new Color(242, 242, 242));
+			codAutor.setBackground(BLANCOROTO);
 			codAutor.setBorder(null);
 			codAutor.setBounds(134, 19, 128, 19);
 			datos.add(codAutor);
 			codAutor.setColumns(10);
 			
 			nombreAutor = new JTextField();
-			nombreAutor.setBackground(new Color(242, 242, 242));
-			nombreAutor.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+			nombreAutor.setBackground(BLANCOROTO);
+			nombreAutor.setBorder(BORDELINEADO);
 			nombreAutor.setColumns(10);
 			nombreAutor.setBounds(134, 58, 128, 19);
 			datos.add(nombreAutor);
 			
 			nacionalidad = new JTextField();
-			nacionalidad.setBackground(new Color(242, 242, 242));
-			nacionalidad.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+			nacionalidad.setBackground(BLANCOROTO);
+			nacionalidad.setBorder(BORDELINEADO);
 			nacionalidad.setColumns(10);
 			nacionalidad.setBounds(134, 98, 128, 19);
 			datos.add(nacionalidad);
 			
 			codLibro = new JTextField();
 			codLibro.setEditable(false);
-			codLibro.setBackground(new Color(242, 242, 242));
+			codLibro.setBackground(BLANCOROTO);
 			codLibro.setBorder(null);
 			codLibro.setColumns(10);
 			codLibro.setBounds(134, 141, 128, 19);
 			datos.add(codLibro);
 			
 			titulo = new JTextField();
-			titulo.setBackground(new Color(242, 242, 242));
-			titulo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+			titulo.setBackground(BLANCOROTO);
+			titulo.setBorder(BORDELINEADO);
 			titulo.setColumns(10);
 			titulo.setBounds(134, 185, 128, 19);
 			datos.add(titulo);
 			
 			año = new JTextField();
 			año.setColumns(10);
-			año.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-			año.setBackground(new Color(242, 242, 242));
+			año.setBorder(BORDELINEADO);
+			año.setBackground(BLANCOROTO);
 			año.setBounds(134, 228, 128, 19);
 			datos.add(año);
 			
 			url = new JTextArea();
 			url.setColumns(10);
-			url.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-			url.setBackground(new Color(242, 242, 242));
+			url.setBorder(BORDELINEADO);
+			url.setBackground(BLANCOROTO);
 			url.setBounds(134, 274, 128, 19);
 			datos.add(url);
 		
@@ -312,20 +321,20 @@ public class Vista extends JPanel {
 			
 			//Añadimos los botones
 			bGuardaLibro = new JButton("Guardar");
-			bGuardaLibro.setBackground(new Color(166, 166, 166));
+			bGuardaLibro.setBackground(GRISMEDIO);
 			bGuardaLibro.setBorder(null);
 			bGuardaLibro.setBounds(0, 325, 85, 21);
 			datos.add(bGuardaLibro);
 			
 			bBorraLibro = new JButton("Borrar");
-			bBorraLibro.setBackground(new Color(166, 166, 166));
+			bBorraLibro.setBackground(GRISMEDIO);
 			bBorraLibro.setBorder(null);
 			bBorraLibro.setBounds(95, 325, 96, 21);
 			bBorraLibro.setEnabled(false);
 			datos.add(bBorraLibro);
 			
 			bLimpiar = new JButton("Limpiar");
-			bLimpiar.setBackground(new Color(166, 166, 166));
+			bLimpiar.setBackground(GRISMEDIO);
 			bLimpiar.setBorder(null);
 			bLimpiar.setActionCommand("bLimpiar");
 			bLimpiar.setBounds(201, 325, 85, 21);
@@ -336,7 +345,7 @@ public class Vista extends JPanel {
 		JScrollPane scrollImagen = new JScrollPane();
 		scrollImagen.setBounds(10, 49, 326, 500);
 		p.add(scrollImagen);
-		scrollImagen.setBackground(new Color(255, 255, 255));
+		scrollImagen.setBackground(COLORBLANCO);
 		scrollImagen.setBorder(null);
 				
 		imagen = new JLabel("");
@@ -348,12 +357,12 @@ public class Vista extends JPanel {
 		modelDisponibles.addAll(this.listarLibros());
 		disponibles = new JList<Libro>();
 		disponibles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		disponibles.setSelectionBackground(new Color(242, 159, 5));
-		disponibles.setBackground(new Color(255, 255, 255));
+		disponibles.setSelectionBackground(NARANJA);
+		disponibles.setBackground(COLORBLANCO);
 		disponibles.setModel(modelDisponibles);
 		
 		JScrollPane scrollDisponibles = new JScrollPane();
-		scrollDisponibles.setViewportBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		scrollDisponibles.setViewportBorder(BORDELINEADO);
 		scrollDisponibles.setBorder(null);
 		scrollDisponibles.setBounds(376, 406, 286, 143);
 		scrollDisponibles.setViewportView(disponibles);
@@ -367,21 +376,21 @@ public class Vista extends JPanel {
 	private JPanel panelSocio() throws SQLException {
 		JPanel p = new JPanel();
 		p.setBorder(null);
-		p.setBackground(new Color(255, 255, 255));
+		p.setBackground(COLORBLANCO);
 		p.setBounds(243, 0, 731, 583);
 		p.setLayout(null);
 		
 			//Creamos el panel con los campos de los datos de los usuarios
 			JPanel Campos = new JPanel();
 			Campos.setBounds(0, 43, 236, 191);
-			Campos.setBackground(new Color(255, 255, 255));
+			Campos.setBackground(COLORBLANCO);
 			p.add(Campos);
 			Campos.setLayout(null);
 			
 				//Creamos las cajas de texto
 				codSocio = new JTextField();
 				codSocio.setBounds(101, 30, 96, 19);
-				codSocio.setBackground(new Color(242, 242, 242));
+				codSocio.setBackground(BLANCOROTO);
 				codSocio.setBorder(null);
 				codSocio.setColumns(10);
 				codSocio.setEditable(false);
@@ -390,32 +399,32 @@ public class Vista extends JPanel {
 				
 				nombreSocio = new JTextField();
 				nombreSocio.setBounds(101, 59, 96, 19);
-				nombreSocio.setBackground(new Color(242, 242, 242));
-				nombreSocio.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+				nombreSocio.setBackground(BLANCOROTO);
+				nombreSocio.setBorder(BORDELINEADO);
 				nombreSocio.setColumns(10);
 				Campos.add(nombreSocio);
 
 				
 				apellidos = new JTextField();
 				apellidos.setBounds(101, 88, 96, 19);
-				apellidos.setBackground(new Color(242, 242, 242));
-				apellidos.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+				apellidos.setBackground(BLANCOROTO);
+				apellidos.setBorder(BORDELINEADO);
 				apellidos.setColumns(10);
 				Campos.add(apellidos);
 				
 				
 				telefono = new JTextField();
 				telefono.setBounds(101, 117, 96, 19);
-				telefono.setBackground(new Color(242, 242, 242));
-				telefono.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+				telefono.setBackground(BLANCOROTO);
+				telefono.setBorder(BORDELINEADO);
 				telefono.setColumns(10);
 				Campos.add(telefono);
 		
 				
 				direccion = new JTextField();
 				direccion.setBounds(101, 146, 96, 19);
-				direccion.setBackground(new Color(242, 242, 242));
-				direccion.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+				direccion.setBackground(BLANCOROTO);
+				direccion.setBorder(BORDELINEADO);
 				direccion.setColumns(10);
 				Campos.add(direccion);
 				
@@ -444,20 +453,20 @@ public class Vista extends JPanel {
 				//Añadimos los botones
 				bGuardaSocio = new JButton("Guardar");			
 				bGuardaSocio.setBounds(0, 244, 81, 21);
-				bGuardaSocio.setBackground(new Color(166, 166, 166));
+				bGuardaSocio.setBackground(GRISMEDIO);
 				bGuardaSocio.setBorder(null);
 				p.add(bGuardaSocio);
 				
 				bBorraSocio = new JButton("Borrar");
 				bBorraSocio.setBounds(84, 244, 81, 21);
-				bBorraSocio.setBackground(new Color(166, 166, 166));
+				bBorraSocio.setBackground(GRISMEDIO);
 				bBorraSocio.setBorder(null);
 				bBorraSocio.setEnabled(false);
 				p.add(bBorraSocio);
 				
 				bLimpiaSocio = new JButton("Limpiar");
 				bLimpiaSocio.setBounds(168, 244, 81, 21);
-				bLimpiaSocio.setBackground(new Color(166, 166, 166));
+				bLimpiaSocio.setBackground(GRISMEDIO);
 				bLimpiaSocio.setBorder(null);
 				p.add(bLimpiaSocio);
 				
@@ -485,7 +494,7 @@ public class Vista extends JPanel {
 		tablaSocios = new JTable();
 		scrollSocios.setViewportView(tablaSocios);
 		tablaSocios.setShowVerticalLines(false);
-		tablaSocios.setSelectionBackground(new Color(242,159,5));
+		tablaSocios.setSelectionBackground(NARANJA);
 		tablaSocios.setBorder(null);
 		tablaSocios.setFillsViewportHeight(true);
 		tablaSocios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -505,7 +514,7 @@ public class Vista extends JPanel {
 
 		JPanel p = new JPanel();
 		p.setBorder(null);
-		p.setBackground(new Color(255, 255, 255));
+		p.setBackground(COLORBLANCO);
 		p.setBounds(255, 0, 709, 583);
 		p.setLayout(null);
 		
@@ -520,7 +529,7 @@ public class Vista extends JPanel {
 		
 		tableSocio = new JTable();
 		tableSocio.setShowVerticalLines(false);
-		tableSocio.setSelectionBackground(new Color(242,159,5));
+		tableSocio.setSelectionBackground(NARANJA);
 		tableSocio.setBorder(null);
 		tableSocio.setFillsViewportHeight(true);
 		tableSocio.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -533,8 +542,8 @@ public class Vista extends JPanel {
 		
 		listaLibros = new JList<Libro>();
 		listaLibros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listaLibros.setSelectionBackground(new Color(242, 159, 5));
-		listaLibros.setBackground(new Color(255, 255, 255));
+		listaLibros.setSelectionBackground(NARANJA);
+		listaLibros.setBackground(COLORBLANCO);
 		listaLibros.setModel(modelDisponibles);
 		scrollLibro.setViewportView(listaLibros);
 		
@@ -557,7 +566,7 @@ public class Vista extends JPanel {
 		
 		tablePrestamos = new JTable();
 		tablePrestamos.setShowVerticalLines(false);
-		tablePrestamos.setSelectionBackground(new Color(242,159,5));
+		tablePrestamos.setSelectionBackground(NARANJA);
 		tablePrestamos.setBorder(null);
 		tablePrestamos.setFillsViewportHeight(true);
 		tablePrestamos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -568,13 +577,13 @@ public class Vista extends JPanel {
 		
 		prestar = new JButton("Prestar");
 		prestar.setBounds(23, 272, 85, 21);
-		prestar.setBackground(new Color(166, 166, 166));
+		prestar.setBackground(GRISMEDIO);
 		prestar.setBorder(null);
 		p.add(prestar);
 		
 		devolver = new JButton("Devolver");
 		devolver.setBounds(25, 547, 85, 21);
-		devolver.setBackground(new Color(166, 166, 166));
+		devolver.setBackground(GRISMEDIO);
 		devolver.setBorder(null);
 		p.add(devolver);
 		
@@ -635,7 +644,6 @@ public class Vista extends JPanel {
 		btn_panel_libro.addMouseListener(ctr);
 		btn_panel_socios.addMouseListener(ctr);
 		btn_panel_prestamos.addMouseListener(ctr);
-		
 		
 		disponibles.addListSelectionListener(ctr);
 		bGuardaLibro.addActionListener(ctr);
@@ -948,6 +956,4 @@ public class Vista extends JPanel {
 	public void setPortada(JPanel portada) {
 		this.portada = portada;
 	}
-	
-	
 }

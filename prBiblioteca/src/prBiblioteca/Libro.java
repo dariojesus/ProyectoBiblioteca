@@ -10,7 +10,6 @@ public class Libro {
 	private String publicacion;
 	private String imagen;
 	
-	
 	public Libro(int codAutor, int codLibro, String autor, String nacionalidad, String titulo, String publicacion, String imagen) {
 		super();
 		this.codAutor = codAutor;
@@ -93,9 +92,4 @@ public class Libro {
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
 	}
-	
-	
-	
-	
-
 }

@@ -31,8 +31,8 @@ public class Modelo {
 	
 	//Métodos útiles del modelo
 	public void cierraConexion() throws SQLException {
-		conexion.close();System.out.println("Conexión cerrada");
-		System.exit(0);
+		conexion.close();
+		System.out.println("Conexión cerrada");
 		}
 	
 	public void creaConsulta() throws SQLException {res = st.executeQuery("SELECT * FROM AUTOR");}

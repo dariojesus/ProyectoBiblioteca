@@ -87,7 +87,7 @@ public class LibreriaBaseDatos {
 		
 		
 		//Se rellena la tabla de Socio
-		try (Scanner sc = new Scanner (new File("./src/prBiblioteca/socios.txt"))){
+		try (Scanner sc = new Scanner (new File("./datos_txt/socios.txt"))){
 			
 			while(sc.hasNextLine()){
 				Scanner datos = new Scanner(sc.nextLine());
@@ -102,7 +102,7 @@ public class LibreriaBaseDatos {
 		System.out.println("Tabla SOCIO rellenada.");
 		
 		//Se rellena la tabla de Autor
-		try (Scanner sc = new Scanner (new File("./src/prBiblioteca/autores.txt"))){
+		try (Scanner sc = new Scanner (new File("./datos_txt/autores.txt"))){
 			
 			while(sc.hasNextLine()){
 				Scanner datos = new Scanner(sc.nextLine());
@@ -116,7 +116,7 @@ public class LibreriaBaseDatos {
 		System.out.println("Tabla AUTOR rellenada.");
 		
 		//Se rellena la tabla de Libro
-		try (Scanner sc = new Scanner (new File("./src/prBiblioteca/libros.txt"))){
+		try (Scanner sc = new Scanner (new File("./datos_txt/libros.txt"))){
 			
 			while(sc.hasNextLine()){
 				Scanner datos = new Scanner(sc.nextLine());
@@ -131,7 +131,7 @@ public class LibreriaBaseDatos {
 		System.out.println("Tabla LIBRO rellenada.");
 		
 		//Se rellena la tabla de PRESTAMOS
-		try (Scanner sc = new Scanner (new File("./src/prBiblioteca/prestados.txt"))){
+		try (Scanner sc = new Scanner (new File("./datos_txt/prestados.txt"))){
 			
 			while(sc.hasNextLine()){
 				Scanner datos = new Scanner(sc.nextLine());
